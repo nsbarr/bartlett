@@ -2,7 +2,7 @@ bartlett
 ========
 
 "I have gathered a posie of other men’s flowers, and nothing but the thread that binds them is mine own."
-— John Barlett
+- John Barlett
 
 
 This consists of:
