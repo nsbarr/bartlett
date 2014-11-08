@@ -3,20 +3,12 @@ import re
 from pprint import pprint
 import urllib2
 
-
-#paginator: &kimoffset=2500
-
-#json_data=open('better.json')
-
-#with open('better.json', 'r') as json_data:
-#	data = json.load(json_data)
-
-url = 'https://www.kimonolabs.com/api/5ycszq5u?apikey=ljg3wCjOnciTusPUO6b7KWNsBtShygVN'
+url = 'https://www.kimonolabs.com/api/5ycszq5u?apikey=ljg3wCjOnciTusPUO6b7KWNsBtShygVN' #don't steal my key bro
 paginatorKey = "&kimoffset="
 initialOffset = 0
 newCollection = []
 
-while initialOffset <39000:
+while initialOffset <39000: #hardcoded whatevs
 	response = urllib2.urlopen(url+paginatorKey+str(initialOffset))
 	data = json.load(response)   
 
@@ -31,18 +23,20 @@ while initialOffset <39000:
 			lengthOfSplit = len(split)
 			firstWord = split[0]
 			keyval["keyword"] = firstWord
+
+			#grab the rest of the entry and set it as the entry
 			split.pop(0)
 			newEntryText = ' '.join(split)
 
 			pprint(type(keyval["entry"]))
 
+			#convert all entries to lists
 			if type(keyval["entry"]) == list:
 				keyval["entry"].insert(0,newEntryText)
 			else: 
 				keyval["entry"] = [newEntryText]
 
-			#newCollection.append(keyval)
-
+		#remove page numbers from entries
 		newEntryList = []	
 
 		for entry in keyval["entry"]:
