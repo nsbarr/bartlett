@@ -16,6 +16,8 @@ while initialOffset <39000: #hardcoded whatevs
 
 		keyword = keyval["keyword"].encode("utf-8")
 
+		#I'm still seeing blank keywords in the results.
+		#Not sure why they're showing up / what the cause is
 		if keyword != "":
 
 			#grab the first word of the entry and set it as the keyword
