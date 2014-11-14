@@ -12,12 +12,18 @@ while initialOffset <39000: #hardcoded whatevs
 	response = urllib2.urlopen(url+paginatorKey+str(initialOffset))
 	data = json.load(response)   
 
+	if any(data["results"]):
+		pprint("results not empty")
+	else:
+		pprint("results is empty")
+
 	for keyval in data["results"]["collection1"]:
 
 		keyword = keyval["keyword"].encode("utf-8")
 
 		#I'm still seeing blank keywords in the results.
 		#Not sure why they're showing up / what the cause is
+		#Unclear if any data missing
 		if keyword != "":
 
 			#grab the first word of the entry and set it as the keyword
@@ -29,8 +35,6 @@ while initialOffset <39000: #hardcoded whatevs
 			#grab the rest of the entry and set it as the entry
 			split.pop(0)
 			newEntryText = ' '.join(split)
-
-			pprint(type(keyval["entry"]))
 
 			#convert all entries to lists
 			if type(keyval["entry"]) == list:
