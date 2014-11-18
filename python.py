@@ -3,42 +3,26 @@ import re
 from pprint import pprint
 import urllib2
 
-url = 'https://www.kimonolabs.com/api/5ycszq5u?apikey=ljg3wCjOnciTusPUO6b7KWNsBtShygVN' #don't steal my key bro
-paginatorKey = "&kimoffset="
-initialOffset = 0
+API_KEY = 'Get your own'
+offset = 0
 newCollection = []
 
-while initialOffset <39000: #hardcoded whatevs
-	response = urllib2.urlopen(url+paginatorKey+str(initialOffset))
-	data = json.load(response)   
-
-	if any(data["results"]):
-		pprint("results not empty")
-	else:
-		pprint("results is empty")
-
+while offset <39000: #hardcoded whatevs
+	url = 'https://www.kimonolabs.com/api/5ycszq5u?apikey=%s&kimoffset=%d' % (API_KEY, offset)
+	response = urllib2.urlopen(url)
+	data = json.load(response)
+	
 	for keyval in data["results"]["collection1"]:
-
 		keyword = keyval["keyword"].encode("utf-8")
-
-		#I'm still seeing blank keywords in the results.
-		#Not sure why they're showing up / what the cause is
-		#Unclear if any data missing
-		if keyword != "":
-
+		if keyword:
 			#grab the first word of the entry and set it as the keyword
-			split = re.split('\s+', keyword)
-			lengthOfSplit = len(split)
-			firstWord = split[0]
-			keyval["keyword"] = firstWord
-
-			#grab the rest of the entry and set it as the entry
-			split.pop(0)
-			newEntryText = ' '.join(split)
-
-			#convert all entries to lists
-			if type(keyval["entry"]) == list:
-				keyval["entry"].insert(0,newEntryText)
+			keyval["keyword"] = keyword.split(' ')[0]
+			newEntryText = ' '.join(keyword.split(' ')[1:])
+			#convert all entries to list
+			
+			# WHY?
+			if len(keyval["entry"]):
+				keyval["entry"].insert(0, newEntryText)
 			else: 
 				keyval["entry"] = [newEntryText]
 
@@ -46,19 +30,13 @@ while initialOffset <39000: #hardcoded whatevs
 		newEntryList = []	
 
 		for entry in keyval["entry"]:
-			entrySplit = re.split('\s+', entry)
-			entrySplit.pop()
-			entryJoin = ' '.join(entrySplit)
+			entryJoin = ' '.join(entry.split(' ')[1:])
 			newEntryList.append(entryJoin)
 		keyval["entry"] = newEntryList
 
 		newCollection.append(keyval)
 
 		
-	initialOffset +=2500
+	offset += 2500
 
-data["results"] = newCollection
-
-with open('new.json', 'w') as json_data:
-	json.dump(data, json_data, indent=4)
-
+pprint json.dumps(data, indent=4)
