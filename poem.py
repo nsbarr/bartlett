@@ -7,11 +7,9 @@ import urllib2
 response=open('new.json')
 data = json.load(response)
 
-#sourceText = "To start over in the carved moment is to take cover"
-#sourceText = "if I make you happy you are not longer doubtful"
-sourceText = "Today was a very hard day because everyone got fired"
+#Change the source text to change the poem."
+sourceText = "The palm tree exposes a large number of loose, carved spines out of pleasure Boredom"
 sourceText = re.split('\s+', sourceText)
-pprint(sourceText)
 
 
 
