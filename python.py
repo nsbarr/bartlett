@@ -24,8 +24,10 @@ while offset <39000: #hardcoded whatevs
 				keyval["entry"].insert(0,newEntryText)
 			else: 
 				keyval["entry"] = [newEntryText]
+			newCollection.append(keyval)
 		else: #remove items with empty keywords
-			data["results"]["collection1"].remove(keyval)
+			#data["results"]["collection1"].remove(keyval)
+			pprint("no keyword")
 
 		#remove page numbers from entries
 		newEntryList = []	
@@ -35,10 +37,10 @@ while offset <39000: #hardcoded whatevs
 			newEntryList.append(entryJoin)
 		keyval["entry"] = newEntryList
 
-		#newCollection.append(keyval)
+		
 
 		
 	offset += 2500
 
 with open('go.json', 'w') as json_data:
-	json.dump(data, json_data, indent=4)
+	json.dump(newCollection, json_data, indent=4)
